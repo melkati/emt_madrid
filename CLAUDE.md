@@ -53,9 +53,15 @@ docker-compose up
 
 - **`custom_components/emt_madrid/sensor.py`** - BusLineSensor entity that Home Assistant manages. Creates one sensor per bus line at a stop. State is arrival time in minutes; attributes contain destination, origin, frequency, distance, etc.
 
+### API Authentication
+
+The integration authenticates using `X-ClientId` and `passKey` headers (preferred, 250k calls/day). Legacy email/password authentication is also supported but has a lower rate limit (20k calls/day).
+
+The API requires cookie persistence across requests, so a `requests.Session()` is used to maintain authentication state. The login endpoint may return code `"00"` (fresh token) or `"01"` (cached token); both are accepted.
+
 ### API Response Codes
 
-The EMT API uses specific response codes: `01` = success, `80` = invalid token, `81` = endpoint unavailable (triggers fallback), `90` = stop disabled, `98` = API rate limit.
+The EMT API uses specific response codes: `00`/`01` = success, `80` = invalid token, `81` = endpoint unavailable (triggers fallback), `90` = stop disabled, `98` = API rate limit.
 
 ### Sensor Behavior
 

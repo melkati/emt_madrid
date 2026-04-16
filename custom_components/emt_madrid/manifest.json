@@ -1,10 +1,10 @@
 {
   "domain": "emt_madrid",
   "name": "EMT Madrid",
-  "documentation": "https://github.com/logistark/emt_madrid",
-  "issue_tracker": "https://github.com/logistark/emt_madrid/issues",
-  "codeowners": ["@logistark"],
-  "version": "2.2.0",
+  "documentation": "https://github.com/melkati/emt_madrid",
+  "issue_tracker": "https://github.com/melkati/emt_madrid/issues",
+  "codeowners": ["@melkati"],
+  "version": "2.2.1",
   "config_flow": true,
   "iot_class": "cloud_polling"
 }

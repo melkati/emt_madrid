@@ -16,7 +16,19 @@ Thanks to [EMT Madrid MobilityLabs](https://mobilitylabs.emtmadrid.es/) for prov
 
 ## Prerequisites
 
-Register at [EMT MobilityLabs](https://mobilitylabs.emtmadrid.es/) to get your API credentials. You'll receive a confirmation email to activate your account.
+You need credentials from [EMT MobilityLabs](https://mobilitylabs.emtmadrid.es/). **Two options:**
+
+### Option 1: Register your own app (recommended — 250,000 calls/day)
+
+1. Go to [mobilitylabs.emtmadrid.es](https://mobilitylabs.emtmadrid.es/) and register
+2. Create a new application in the portal
+3. You'll receive an `X-ClientId` (UUID) and `passKey` (hex string)
+4. In Home Assistant, enter these as **Email** (`X-ClientId`) and **Password** (`passKey`)
+
+### Option 2: Use your account credentials (legacy — 20,000 calls/day)
+
+1. Register/login at [mobilitylabs.emtmadrid.es](https://mobilitylabs.emtmadrid.es/)
+2. Use your account email and password directly as credentials
 
 ## Installation
 
@@ -24,7 +36,7 @@ Register at [EMT MobilityLabs](https://mobilitylabs.emtmadrid.es/) to get your A
 
 1. Open HACS in Home Assistant
 2. Go to "Integrations" → Three dots menu → "Custom repositories"
-3. Add `https://github.com/logistark/emt_madrid` as Integration
+3. Add `https://github.com/melkati/emt_madrid` as Integration
 4. Search for "EMT Madrid" and install
 5. Restart Home Assistant
 
@@ -57,8 +69,8 @@ To change settings after setup:
 
 | Option | Required | Default | Description |
 |--------|----------|---------|-------------|
-| Email | Yes | - | EMT MobilityLabs email |
-| Password | Yes | - | EMT MobilityLabs password |
+| Email | Yes | - | `X-ClientId` (recommended) or your MobilityLabs email |
+| Password | Yes | - | `passKey` (recommended) or your MobilityLabs password |
 | Radius | No | 300 | Search radius in meters (50-1000) |
 | Latitude | No | zone.home | Custom latitude coordinate |
 | Longitude | No | zone.home | Custom longitude coordinate |
@@ -151,3 +163,21 @@ automation:
 ### 3. Say: "Alexa, buses cercanos"
 
 **Requirements:** [Alexa Media Player](https://github.com/alandtse/alexa_media_player) and Nabu Casa (or Alexa Smart Home skill).
+
+## Changelog
+
+### v2.2.1
+- **Fixed authentication** — EMT API now requires `X-ClientId`/`passKey` headers for login. The integration was failing with "Invalid credentials" errors because the API changed its authentication scheme.
+- **Session persistence** — Uses `requests.Session()` to maintain authentication cookies across API calls, which the EMT API requires.
+- **Both response codes accepted** — Login may return code `"00"` (fresh token) or `"01"` (cached token); both are now accepted as valid.
+
+### v2.2.0
+- Add Config Flow and Options Flow
+- Add nearby stops detection via GPS
+- Add `get_nearby_arrivals` service
+- Add Alexa voice integration support
+- Migrate from YAML-only to UI-based configuration
+
+### v2.0.0
+- Full rewrite with new architecture
+- HACS support added
