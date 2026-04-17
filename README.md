@@ -16,19 +16,17 @@ Thanks to [EMT Madrid MobilityLabs](https://mobilitylabs.emtmadrid.es/) for prov
 
 ## Prerequisites
 
-You need credentials from [EMT MobilityLabs](https://mobilitylabs.emtmadrid.es/). **Two options:**
+You need application credentials from [EMT MobilityLabs](https://mobilitylabs.emtmadrid.es/).
 
-### Option 1: Register your own app (recommended — 250,000 calls/day)
+### Register your own app
 
 1. Go to [mobilitylabs.emtmadrid.es](https://mobilitylabs.emtmadrid.es/) and register
 2. Create a new application in the portal
 3. You'll receive an `X-ClientId` (UUID) and `passKey` (hex string)
 4. In Home Assistant, enter these as **Email** (`X-ClientId`) and **Password** (`passKey`)
 
-### Option 2: Use your account credentials (legacy — 20,000 calls/day)
-
-1. Register/login at [mobilitylabs.emtmadrid.es](https://mobilitylabs.emtmadrid.es/)
-2. Use your account email and password directly as credentials
+> **Note**
+> This integration authenticates using application credentials only. Direct login with a MobilityLabs account email/password is not supported.
 
 ## Installation
 
@@ -69,8 +67,8 @@ To change settings after setup:
 
 | Option | Required | Default | Description |
 |--------|----------|---------|-------------|
-| Email | Yes | - | `X-ClientId` (recommended) or your MobilityLabs email |
-| Password | Yes | - | `passKey` (recommended) or your MobilityLabs password |
+| Email | Yes | - | `X-ClientId` (UUID from your EMT MobilityLabs app) |
+| Password | Yes | - | `passKey` (hex string from your EMT MobilityLabs app) |
 | Radius | No | 300 | Search radius in meters (50-1000) |
 | Latitude | No | zone.home | Custom latitude coordinate |
 | Longitude | No | zone.home | Custom longitude coordinate |
@@ -170,6 +168,7 @@ automation:
 - **Fixed authentication** — EMT API now requires `X-ClientId`/`passKey` headers for login. The integration was failing with "Invalid credentials" errors because the API changed its authentication scheme.
 - **Session persistence** — Uses `requests.Session()` to maintain authentication cookies across API calls, which the EMT API requires.
 - **Both response codes accepted** — Login may return code `"00"` (fresh token) or `"01"` (cached token); both are now accepted as valid.
+- **UI labels updated** — Credential fields now clearly show "Client ID" and "passKey" to avoid confusion with legacy email/password credentials.
 
 ### v2.2.0
 - Add Config Flow and Options Flow

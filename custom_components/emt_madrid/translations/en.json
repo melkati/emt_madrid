@@ -2,16 +2,7 @@
   "config": {
     "step": {
       "user": {
-        "title": "EMT Madrid",
         "description": "Configure EMT Madrid to get bus arrivals near your location. Register at https://mobilitylabs.emtmadrid.es/ to get your credentials.",
-        "data": {
-          "email": "Email",
-          "password": "Password",
-          "radius": "Search radius (meters)",
-          "latitude": "Latitude (optional)",
-          "longitude": "Longitude (optional)",
-          "stops": "Additional stop IDs (optional)"
-        },
         "data_description": {
           "radius": "How far to search for bus stops (50-1000 meters)",
           "latitude": "Custom latitude. Leave empty to use home location",
@@ -21,7 +12,6 @@
       }
     },
     "error": {
-      "invalid_auth": "Invalid email or password",
       "no_home_zone": "Home zone not configured and no custom coordinates provided",
       "invalid_stops": "Invalid stop IDs. Use comma-separated numbers",
       "unknown": "Unexpected error"
@@ -33,13 +23,6 @@
   "options": {
     "step": {
       "init": {
-        "title": "EMT Madrid Options",
-        "data": {
-          "radius": "Search radius (meters)",
-          "latitude": "Latitude (optional)",
-          "longitude": "Longitude (optional)",
-          "stops": "Additional stop IDs (optional)"
-        },
         "data_description": {
           "radius": "How far to search for bus stops (50-1000 meters)",
           "latitude": "Custom latitude. Leave empty to use home location",

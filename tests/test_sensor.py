@@ -79,7 +79,7 @@ VALID_ARRIVALS = {
 def make_request_mock(url, headers=None, data=None, method="POST"):
     """Mock the API request."""
     if "login" in url:
-        if headers and headers.get("email") == "invalid@email.com":
+        if headers and headers.get("X-ClientId") == "invalid-client-id":
             return INVALID_LOGIN
         return VALID_LOGIN
     if "arroundxy" in url:
@@ -146,7 +146,7 @@ class TestConfigFlow:
 
         result = await flow.async_step_user(
             user_input={
-                CONF_EMAIL: "invalid@email.com",
+                CONF_EMAIL: "invalid-client-id",
                 CONF_PASSWORD: "password123",
                 CONF_RADIUS: 300,
                 CONF_STOPS: "",
@@ -247,7 +247,7 @@ class TestAPIEMT:
         """Test failed authentication."""
         from custom_components.emt_madrid.emt_madrid import APIEMT
 
-        api = APIEMT("invalid@email.com", "password123", 0)
+        api = APIEMT("invalid-client-id", "password123", 0)
         api.authenticate()
 
         assert api._token == "Invalid token"
@@ -301,7 +301,7 @@ class TestAPIEMT:
         """Test getting nearby arrivals with invalid token."""
         from custom_components.emt_madrid.emt_madrid import APIEMT
 
-        api = APIEMT("invalid@email.com", "password123", 0)
+        api = APIEMT("invalid-client-id", "password123", 0)
         api.authenticate()
 
         arrivals = api.get_nearby_arrivals(-3.7038, 40.4168, 300, 10)

@@ -55,9 +55,9 @@ docker-compose up
 
 ### API Authentication
 
-The integration authenticates using `X-ClientId` and `passKey` headers (preferred, 250k calls/day). Legacy email/password authentication is also supported but has a lower rate limit (20k calls/day).
+The integration authenticates using `X-ClientId` and `passKey` headers. Contributor changes should assume this header-based flow is the supported authentication mechanism.
 
-The API requires cookie persistence across requests, so a `requests.Session()` is used to maintain authentication state. The login endpoint may return code `"00"` (fresh token) or `"01"` (cached token); both are accepted.
+A `requests.Session()` is used for authentication and subsequent API requests, and the login endpoint may return code `"00"` (fresh token) or `"01"` (cached token); both are accepted.
 
 ### API Response Codes
 
