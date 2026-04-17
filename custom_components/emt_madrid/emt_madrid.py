@@ -29,6 +29,7 @@ class APIEMT:
         self._user = user
         self._password = password
         self._token = None
+        self._session = requests.Session()
         self._stop_info = {
             "bus_stop_id": stop_id,
             "bus_stop_name": None,
@@ -38,8 +39,13 @@ class APIEMT:
         }
 
     def authenticate(self):
-        """Authenticate the user using the provided credentials."""
-        headers = {"email": self._user, "password": self._password}
+        """Authenticate the user using the provided credentials.
+
+        Uses X-ClientId and passKey headers for the EMT Open API login.
+        The EMT API requires cookie persistence across requests, so a
+        Session object is used to maintain authentication state.
+        """
+        headers = {"X-ClientId": self._user, "passKey": self._password}
         url = f"{BASE_URL}{ENDPOINT_LOGIN}"
         response = self._make_request(url, headers=headers, method="GET")
         self._token = self._extract_token(response)
@@ -47,8 +53,12 @@ class APIEMT:
     def _extract_token(self, response):
         """Extract the access token from the API response."""
         try:
-            if response.get("code") != "01":
-                _LOGGER.error("Invalid email or password")
+            code = response.get("code")
+            if code not in ("00", "01"):
+                _LOGGER.error(
+                    "EMT API authentication failed. Verify your X-ClientId and "
+                    "passKey in the integration configuration."
+                )
                 return "Invalid token"
             return response["data"][0]["accessToken"]
         except (KeyError, IndexError) as e:
@@ -333,14 +343,18 @@ class APIEMT:
         return all_arrivals[:max_results]
 
     def _make_request(self, url: str, headers=None, data=None, method="POST"):
-        """Send an HTTP request to the specified URL."""
+        """Send an HTTP request to the specified URL.
+
+        Uses a persistent session to maintain authentication cookies
+        across requests, which is required by the EMT API.
+        """
         try:
             if method not in ["POST", "GET"]:
                 raise ValueError(f"Invalid HTTP method: {method}")
-            kwargs = {"url": url, "headers": headers, "timeout": 10}
+            kwargs = {"url": url, "headers": headers, "timeout": 15}
             if method == "POST":
                 kwargs["data"] = json.dumps(data)
-            response = requests.request(method, **kwargs)
+            response = self._session.request(method, **kwargs)
             response.raise_for_status()
             return response.json()
         except requests.HTTPError as e:
