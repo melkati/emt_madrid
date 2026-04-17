@@ -5,8 +5,8 @@
         "title": "EMT Madrid",
         "description": "Configure EMT Madrid to get bus arrivals near your location. Register at https://mobilitylabs.emtmadrid.es/ to get your credentials.",
         "data": {
-          "email": "Usuario (Client ID)",
-          "password": "Contraseña (passKey)",
+          "email": "Client ID (X-ClientId)",
+          "password": "Password (passKey)",
           "radius": "Search radius (meters)",
           "latitude": "Latitude (optional)",
           "longitude": "Longitude (optional)",
@@ -21,7 +21,7 @@
       }
     },
     "error": {
-      "invalid_auth": "Usuario o contraseña inválidos",
+      "invalid_auth": "Invalid Client ID or password",
       "no_home_zone": "Home zone not configured and no custom coordinates provided",
       "invalid_stops": "Invalid stop IDs. Use comma-separated numbers",
       "unknown": "Unexpected error"
